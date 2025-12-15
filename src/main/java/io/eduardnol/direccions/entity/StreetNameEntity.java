@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class StreetNameEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_street_name")
     private Long idStreetName;
 
     @Column(name = "nom", length = 255, nullable = false)

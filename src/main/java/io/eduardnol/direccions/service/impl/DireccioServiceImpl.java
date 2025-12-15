@@ -9,6 +9,7 @@ import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.entity.CodiPostalEntity;
 import io.eduardnol.direccions.entity.DireccioEntity;
 import io.eduardnol.direccions.entity.MunicipiEntity;
+import io.eduardnol.direccions.entity.StreetNameEntity;
 import io.eduardnol.direccions.mapper.*;
 import io.eduardnol.direccions.repository.*;
 import io.eduardnol.direccions.service.DireccioService;
@@ -94,7 +95,7 @@ public class DireccioServiceImpl implements DireccioService {
         if (searchText == null || searchText.trim().isEmpty()) {
             return List.of();
         }
-        List<io.eduardnol.direccions.entity.StreetNameEntity> streetNames = streetNameRepository.searchByNom(searchText.trim());
+        List<StreetNameEntity> streetNames = streetNameRepository.searchByNom(searchText.trim());
         return streetNames.stream()
                 .map(streetNameMapper::toStreetSearchResultDTO)
                 .toList();
@@ -102,7 +103,7 @@ public class DireccioServiceImpl implements DireccioService {
 
     @Override
     public StreetDetailDTO getStreetDetailsById(Long idStreetName) {
-        Optional<io.eduardnol.direccions.entity.StreetNameEntity> streetName = streetNameRepository.findById(idStreetName);
+        Optional<StreetNameEntity> streetName = streetNameRepository.findById(idStreetName);
         if (streetName.isEmpty()) {
             log.warn("StreetName with id {} not found", idStreetName);
             return null;
