@@ -33,12 +33,13 @@ public class DireccioServiceImpl implements DireccioService {
     private final TipusViaRepository tipusViaRepository;
     private final ComunitatAutonomaRepository comunitatAutonomaRepository;
     private final DireccioRepository direccioRepository;
+    private final StreetNameRepository streetNameRepository;
     private final PaisMapper paisMapper;
     private final ComunitatAutonomaMapper comunitatAutonomaMapper;
     private final ProvinciaMapper provinciaMapper;
     private final MunicipiMapper municipiMapper;
     private final TipusViaMapper tipusViaMapper;
-    private final DireccioMapper direccioMapper;
+    private final StreetNameMapper streetNameMapper;
 
     @Override
     public List<ComboCodeDTO> getAllPais() {
@@ -93,19 +94,19 @@ public class DireccioServiceImpl implements DireccioService {
         if (searchText == null || searchText.trim().isEmpty()) {
             return List.of();
         }
-        List<DireccioEntity> direccions = direccioRepository.searchByNomVia(searchText.trim());
-        return direccions.stream()
-                .map(direccioMapper::toStreetSearchResultDTO)
+        List<io.eduardnol.direccions.entity.StreetNameEntity> streetNames = streetNameRepository.searchByNom(searchText.trim());
+        return streetNames.stream()
+                .map(streetNameMapper::toStreetSearchResultDTO)
                 .toList();
     }
 
     @Override
-    public StreetDetailDTO getStreetDetailsById(Long idDireccio) {
-        Optional<DireccioEntity> direccio = direccioRepository.findById(idDireccio);
-        if (direccio.isEmpty()) {
-            log.warn("Direccio with id {} not found", idDireccio);
+    public StreetDetailDTO getStreetDetailsById(Long idStreetName) {
+        Optional<io.eduardnol.direccions.entity.StreetNameEntity> streetName = streetNameRepository.findById(idStreetName);
+        if (streetName.isEmpty()) {
+            log.warn("StreetName with id {} not found", idStreetName);
             return null;
         }
-        return direccioMapper.toStreetDetailDTO(direccio.get());
+        return streetNameMapper.toStreetDetailDTO(streetName.get());
     }
 }

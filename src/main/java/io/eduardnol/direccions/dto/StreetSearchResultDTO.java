@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StreetSearchResultDTO {
-    private Long idDireccio;
+    private Long idStreetName;
     private String nomVia;
-    private String tipusVia;
     private String municipi;
     private String provincia;
 }

@@ -18,5 +18,5 @@ public interface DireccioService {
     Long checkCodiPostal(CheckCodiPostalDTO checkCodiPostalDTO);
     ComarcaDTO getComarcaByIdMunicipi(Long idMunicipi);
     List<StreetSearchResultDTO> searchStreets(String searchText);
-    StreetDetailDTO getStreetDetailsById(Long idDireccio);
+    StreetDetailDTO getStreetDetailsById(Long idStreetName);
 }

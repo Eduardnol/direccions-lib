@@ -74,9 +74,9 @@ public class DireccioController implements DireccioApi {
     }
 
     @Override
-    @GetMapping("/street/{idDireccio}")
-    public ResponseEntity<StreetDetailDTO> getStreetDetailsById(@PathVariable Long idDireccio) {
-        StreetDetailDTO streetDetailDTO = direccioService.getStreetDetailsById(idDireccio);
+    @GetMapping("/street/{idStreetName}")
+    public ResponseEntity<StreetDetailDTO> getStreetDetailsById(@PathVariable Long idStreetName) {
+        StreetDetailDTO streetDetailDTO = direccioService.getStreetDetailsById(idStreetName);
         if (streetDetailDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

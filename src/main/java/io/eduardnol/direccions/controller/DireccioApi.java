@@ -19,5 +19,5 @@ public interface DireccioApi {
     Long checkCodiPostal(CheckCodiPostalDTO checkCodiPostalDTO);
     ResponseEntity<ComarcaDTO> getComarcaByIdMunicipi(Long idMunicipi);
     List<StreetSearchResultDTO> searchStreets(@jakarta.validation.constraints.NotBlank String searchText);
-    ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idDireccio);
+    ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idStreetName);
 }
