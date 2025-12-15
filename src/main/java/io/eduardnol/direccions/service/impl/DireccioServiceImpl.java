@@ -4,7 +4,10 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.StreetDetailDTO;
+import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.entity.CodiPostalEntity;
+import io.eduardnol.direccions.entity.DireccioEntity;
 import io.eduardnol.direccions.entity.MunicipiEntity;
 import io.eduardnol.direccions.mapper.*;
 import io.eduardnol.direccions.repository.*;
@@ -29,11 +32,13 @@ public class DireccioServiceImpl implements DireccioService {
     private final CodiPostalRepository codiPostalRepository;
     private final TipusViaRepository tipusViaRepository;
     private final ComunitatAutonomaRepository comunitatAutonomaRepository;
+    private final DireccioRepository direccioRepository;
     private final PaisMapper paisMapper;
     private final ComunitatAutonomaMapper comunitatAutonomaMapper;
     private final ProvinciaMapper provinciaMapper;
     private final MunicipiMapper municipiMapper;
     private final TipusViaMapper tipusViaMapper;
+    private final DireccioMapper direccioMapper;
 
     @Override
     public List<ComboCodeDTO> getAllPais() {
@@ -81,5 +86,26 @@ public class DireccioServiceImpl implements DireccioService {
         return ComarcaDTO.builder()
                 .name(municipi.getComarca())
                 .build();
+    }
+
+    @Override
+    public List<StreetSearchResultDTO> searchStreets(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            return List.of();
+        }
+        List<DireccioEntity> direccions = direccioRepository.searchByNomVia(searchText.trim());
+        return direccions.stream()
+                .map(direccioMapper::toStreetSearchResultDTO)
+                .toList();
+    }
+
+    @Override
+    public StreetDetailDTO getStreetDetailsById(Long idDireccio) {
+        Optional<DireccioEntity> direccio = direccioRepository.findById(idDireccio);
+        if (direccio.isEmpty()) {
+            log.warn("Direccio with id {} not found", idDireccio);
+            return null;
+        }
+        return direccioMapper.toStreetDetailDTO(direccio.get());
     }
 }

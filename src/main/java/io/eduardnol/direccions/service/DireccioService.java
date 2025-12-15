@@ -4,6 +4,8 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.StreetDetailDTO;
+import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 
 import java.util.List;
 
@@ -15,4 +17,6 @@ public interface DireccioService {
     List<ComboDTO> getTipusVia();
     Long checkCodiPostal(CheckCodiPostalDTO checkCodiPostalDTO);
     ComarcaDTO getComarcaByIdMunicipi(Long idMunicipi);
+    List<StreetSearchResultDTO> searchStreets(String searchText);
+    StreetDetailDTO getStreetDetailsById(Long idDireccio);
 }
