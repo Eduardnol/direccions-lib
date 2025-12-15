@@ -18,6 +18,6 @@ public interface DireccioApi {
     List<ComboDTO> getTipusVia();
     Long checkCodiPostal(CheckCodiPostalDTO checkCodiPostalDTO);
     ResponseEntity<ComarcaDTO> getComarcaByIdMunicipi(Long idMunicipi);
-    List<StreetSearchResultDTO> searchStreets(String searchText);
+    List<StreetSearchResultDTO> searchStreets(@jakarta.validation.constraints.NotBlank String searchText);
     ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idDireccio);
 }

@@ -69,7 +69,7 @@ public class DireccioController implements DireccioApi {
 
     @Override
     @GetMapping("/search/streets")
-    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") String searchText) {
+    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @jakarta.validation.constraints.NotBlank String searchText) {
         return direccioService.searchStreets(searchText);
     }
 
