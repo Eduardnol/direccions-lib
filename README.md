@@ -136,6 +136,8 @@ La librería expone los siguientes endpoints:
 - `GET /api/v1/direccions/tipus-via` - Obtener tipos de vía
 - `POST /api/v1/direccions/codi-postal/check` - Verificar código postal
 - `GET /api/v1/direccions/comarca/{idMunicipi}` - Obtener comarca por municipio
+- `GET /api/v1/direccions/search/streets?q={text}` - Buscar calles por nombre (full-text search)
+- `GET /api/v1/direccions/street/{id}` - Obtener detalles completos de una calle por ID
 
 ### Uso Programático
 
@@ -155,6 +157,12 @@ CheckCodiPostalDTO check = CheckCodiPostalDTO.builder()
     .codiPostal("08001")
     .build();
 Long idCodiPostal = direccioService.checkCodiPostal(check);
+
+// Buscar calles por nombre
+List<StreetSearchResultDTO> streets = direccioService.searchStreets("Gran Via");
+
+// Obtener detalles completos de una calle
+StreetDetailDTO streetDetail = direccioService.getStreetDetailsById(1L);
 ```
 
 ## Estructura de la Base de Datos
