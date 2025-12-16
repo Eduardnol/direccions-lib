@@ -4,6 +4,8 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.StreetDetailDTO;
+import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.service.DireccioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -63,5 +65,21 @@ public class DireccioController implements DireccioApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(comarcaDTO);
+    }
+
+    @Override
+    @GetMapping("/search/streets")
+    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @jakarta.validation.constraints.NotBlank String searchText) {
+        return direccioService.searchStreets(searchText);
+    }
+
+    @Override
+    @GetMapping("/street/{idStreetName}")
+    public ResponseEntity<StreetDetailDTO> getStreetDetailsById(@PathVariable Long idStreetName) {
+        StreetDetailDTO streetDetailDTO = direccioService.getStreetDetailsById(idStreetName);
+        if (streetDetailDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(streetDetailDTO);
     }
 }

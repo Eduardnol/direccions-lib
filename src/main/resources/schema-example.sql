@@ -47,6 +47,13 @@ CREATE TABLE md_tipus_via (
     nom VARCHAR(64)
 );
 
+-- Tabla de nombres de calle registrados
+CREATE TABLE md_street_name (
+    id_street_name BIGSERIAL PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    id_municipi BIGINT NOT NULL REFERENCES md_municipi(id_municipi)
+);
+
 -- Tabla de direcciones
 CREATE TABLE md_direccio (
     id_direccio BIGSERIAL PRIMARY KEY,
@@ -68,6 +75,8 @@ CREATE INDEX idx_comunitat_autonoma_pais ON md_comunitat_autonoma(id_pais);
 CREATE INDEX idx_provincia_comunitat ON md_provincia(id_comunitat_autonoma);
 CREATE INDEX idx_municipi_provincia ON md_municipi(id_provincia);
 CREATE INDEX idx_codi_postal_municipi ON md_codi_postal(id_municipi);
+CREATE INDEX idx_street_name_municipi ON md_street_name(id_municipi);
+CREATE INDEX idx_street_name_nom ON md_street_name(nom);
 
 -- Datos de ejemplo (España)
 INSERT INTO md_pais (id_pais, codi, nom) VALUES (1, 'ESP', 'España');
@@ -103,3 +112,11 @@ INSERT INTO md_codi_postal (id_codi_postal, codi_postal, id_municipi) VALUES
     (2, '08002', 1),
     (3, '17001', 2),
     (4, '28001', 3);
+
+-- Ejemplos de nombres de calles registradas
+INSERT INTO md_street_name (id_street_name, nom, id_municipi) VALUES
+    (1, 'Gran Via de les Corts Catalanes', 1),
+    (2, 'Passeig de Gràcia', 1),
+    (3, 'Carrer de Balmes', 1),
+    (4, 'Gran Via', 3),
+    (5, 'Calle Mayor', 3);
