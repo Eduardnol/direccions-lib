@@ -144,6 +144,12 @@ POST /api/v1/direccions/codi-postal/check
 
 # Obtener comarca por municipio
 GET /api/v1/direccions/comarca/1
+
+# Buscar calles por nombre (full-text search)
+GET /api/v1/direccions/search/streets?q=Gran Via
+
+# Obtener detalles completos de una calle por ID
+GET /api/v1/direccions/street/1
 ```
 
 ### Uso Programático
@@ -168,6 +174,12 @@ public class MiControlador {
             .codiPostal("08001")
             .build();
         Long idCodiPostal = direccioService.checkCodiPostal(check);
+        
+        // Buscar calles por nombre
+        List<StreetSearchResultDTO> streets = direccioService.searchStreets("Gran Via");
+        
+        // Obtener detalles completos de una calle
+        StreetDetailDTO streetDetail = direccioService.getStreetDetailsById(1L);
         
         return ResponseEntity.ok(paisos);
     }

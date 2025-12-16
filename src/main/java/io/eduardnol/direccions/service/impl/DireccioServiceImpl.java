@@ -4,8 +4,12 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.StreetDetailDTO;
+import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.entity.CodiPostalEntity;
+import io.eduardnol.direccions.entity.DireccioEntity;
 import io.eduardnol.direccions.entity.MunicipiEntity;
+import io.eduardnol.direccions.entity.StreetNameEntity;
 import io.eduardnol.direccions.mapper.*;
 import io.eduardnol.direccions.repository.*;
 import io.eduardnol.direccions.service.DireccioService;
@@ -29,11 +33,14 @@ public class DireccioServiceImpl implements DireccioService {
     private final CodiPostalRepository codiPostalRepository;
     private final TipusViaRepository tipusViaRepository;
     private final ComunitatAutonomaRepository comunitatAutonomaRepository;
+    private final DireccioRepository direccioRepository;
+    private final StreetNameRepository streetNameRepository;
     private final PaisMapper paisMapper;
     private final ComunitatAutonomaMapper comunitatAutonomaMapper;
     private final ProvinciaMapper provinciaMapper;
     private final MunicipiMapper municipiMapper;
     private final TipusViaMapper tipusViaMapper;
+    private final StreetNameMapper streetNameMapper;
 
     @Override
     public List<ComboCodeDTO> getAllPais() {
@@ -81,5 +88,26 @@ public class DireccioServiceImpl implements DireccioService {
         return ComarcaDTO.builder()
                 .name(municipi.getComarca())
                 .build();
+    }
+
+    @Override
+    public List<StreetSearchResultDTO> searchStreets(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            return List.of();
+        }
+        List<StreetNameEntity> streetNames = streetNameRepository.searchByNom(searchText.trim());
+        return streetNames.stream()
+                .map(streetNameMapper::toStreetSearchResultDTO)
+                .toList();
+    }
+
+    @Override
+    public StreetDetailDTO getStreetDetailsById(Long idStreetName) {
+        Optional<StreetNameEntity> streetName = streetNameRepository.findById(idStreetName);
+        if (streetName.isEmpty()) {
+            log.warn("StreetName with id {} not found", idStreetName);
+            return null;
+        }
+        return streetNameMapper.toStreetDetailDTO(streetName.get());
     }
 }
