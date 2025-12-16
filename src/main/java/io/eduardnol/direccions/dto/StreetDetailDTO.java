@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class StreetDetailDTO {
     private Long idStreetName;
     private String nomVia;
-    private ComboDTO municipi;
-    private ComboDTO comarca;
-    private ComboDTO provincia;
-    private ComboDTO comunitatAutonoma;
-    private ComboDTO pais;
+    private String municipi;
+    private String comarca;
+    private String provincia;
+    private String comunitatAutonoma;
+    private String pais;
 }
