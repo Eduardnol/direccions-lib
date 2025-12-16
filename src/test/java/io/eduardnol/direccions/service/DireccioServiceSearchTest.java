@@ -1,5 +1,6 @@
 package io.eduardnol.direccions.service;
 
+import io.eduardnol.direccions.dto.ComboDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.entity.*;
@@ -131,11 +132,11 @@ class DireccioServiceSearchTest {
         StreetDetailDTO expectedDetail = StreetDetailDTO.builder()
                 .idStreetName(1L)
                 .nomVia("Gran Via")
-                .municipi("Barcelona")
-                .comarca("Barcelonès")
-                .provincia("Barcelona")
-                .comunitatAutonoma("Cataluña")
-                .pais("España")
+                .municipi(ComboDTO.builder().key(1L).value("Barcelona").build())
+                .comarca(ComboDTO.builder().key(null).value("Barcelonès").build())
+                .provincia(ComboDTO.builder().key(1L).value("Barcelona").build())
+                .comunitatAutonoma(ComboDTO.builder().key(1L).value("Cataluña").build())
+                .pais(ComboDTO.builder().key(1L).value("España").build())
                 .build();
 
         when(streetNameRepository.findById(idStreetName)).thenReturn(Optional.of(streetName));
@@ -147,9 +148,9 @@ class DireccioServiceSearchTest {
         // Then
         assertNotNull(result);
         assertEquals("Gran Via", result.getNomVia());
-        assertEquals("Barcelona", result.getMunicipi());
-        assertEquals("Barcelonès", result.getComarca());
-        assertEquals("Cataluña", result.getComunitatAutonoma());
+        assertEquals("Barcelona", result.getMunicipi().getValue());
+        assertEquals("Barcelonès", result.getComarca().getValue());
+        assertEquals("Cataluña", result.getComunitatAutonoma().getValue());
     }
 
     @Test
