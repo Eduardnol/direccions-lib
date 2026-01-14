@@ -7,6 +7,9 @@ import io.eduardnol.direccions.dto.ComboDTO;
 import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -19,12 +22,11 @@ public interface DireccioApi {
     List<ComboDTO> getTipusVia();
     Long checkCodiPostal(CheckCodiPostalDTO checkCodiPostalDTO);
     ResponseEntity<ComarcaDTO> getComarcaByIdMunicipi(Long idMunicipi);
-    List<StreetSearchResultDTO> searchStreets(@jakarta.validation.constraints.NotBlank String searchText);
+    List<StreetSearchResultDTO> searchStreets(@NotBlank String searchText);
     ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idStreetName);
     
     // New methods for municipalities
-    PageResponseDTO<ComboDTO> getAllMunicipiPaginated(@jakarta.validation.constraints.Min(0) int page, 
-                                                        @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size);
+    PageResponseDTO<ComboDTO> getAllMunicipiPaginated(@Min(0) int page, @Min(1) @Max(100) int size);
     List<ComboDTO> getAllMunicipi();
-    List<ComboDTO> getMunicipiByComunitatAutonoma(@jakarta.validation.constraints.Min(1) Long idComunitatAutonoma);
+    List<ComboDTO> getMunicipiByComunitatAutonoma(@Min(1) Long idComunitatAutonoma);
 }

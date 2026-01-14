@@ -8,9 +8,13 @@ import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.service.DireccioService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/direccions")
 @AllArgsConstructor
+@Validated
 public class DireccioController implements DireccioApi {
 
     private final DireccioService direccioService;
@@ -70,7 +75,7 @@ public class DireccioController implements DireccioApi {
 
     @Override
     @GetMapping("/search/streets")
-    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @jakarta.validation.constraints.NotBlank String searchText) {
+    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @NotBlank String searchText) {
         return direccioService.searchStreets(searchText);
     }
 
@@ -87,8 +92,8 @@ public class DireccioController implements DireccioApi {
     @Override
     @GetMapping("/municipi/paginated")
     public PageResponseDTO<ComboDTO> getAllMunicipiPaginated(
-            @RequestParam(defaultValue = "0") @jakarta.validation.constraints.Min(0) int page,
-            @RequestParam(defaultValue = "20") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size) {
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
         return direccioService.getAllMunicipiPaginated(page, size);
     }
 
@@ -100,7 +105,7 @@ public class DireccioController implements DireccioApi {
 
     @Override
     @GetMapping("/municipi/comunitat-autonoma/{idComunitatAutonoma}")
-    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable @jakarta.validation.constraints.Min(1) Long idComunitatAutonoma) {
+    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable @Min(1) Long idComunitatAutonoma) {
         return direccioService.getMunicipiByComunitatAutonoma(idComunitatAutonoma);
     }
 }
