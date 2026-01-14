@@ -133,6 +133,9 @@ La librería expone los siguientes endpoints:
 - `GET /api/v1/direccions/comunitat-autonoma/{idPais}` - Obtener comunidades autónomas por país
 - `GET /api/v1/direccions/provincia/{idComunitatAutonoma}` - Obtener provincias por comunidad autónoma
 - `GET /api/v1/direccions/municipi/{idProvincia}` - Obtener municipios por provincia
+- `GET /api/v1/direccions/municipi` - Obtener todos los municipios sin paginación
+- `GET /api/v1/direccions/municipi/paginated?page={page}&size={size}` - Obtener todos los municipios con paginación
+- `GET /api/v1/direccions/municipi/comunitat-autonoma/{idComunitatAutonoma}` - Obtener todos los municipios por comunidad autónoma
 - `GET /api/v1/direccions/tipus-via` - Obtener tipos de vía
 - `POST /api/v1/direccions/codi-postal/check` - Verificar código postal
 - `GET /api/v1/direccions/comarca/{idMunicipi}` - Obtener comarca por municipio
@@ -163,6 +166,15 @@ List<StreetSearchResultDTO> streets = direccioService.searchStreets("Gran Via");
 
 // Obtener detalles completos de un nombre de calle por ID
 StreetDetailDTO streetDetail = direccioService.getStreetDetailsById(streets.get(0).getIdStreetName());
+
+// Obtener todos los municipios sin paginación
+List<ComboDTO> municipios = direccioService.getAllMunicipi();
+
+// Obtener todos los municipios con paginación
+PageResponseDTO<ComboDTO> municipiosPaginados = direccioService.getAllMunicipiPaginated(0, 20);
+
+// Obtener municipios por comunidad autónoma
+List<ComboDTO> municipiosCA = direccioService.getMunicipiByComunitatAutonoma(1L);
 ```
 
 ## Estructura de la Base de Datos
@@ -177,6 +189,40 @@ La librería espera las siguientes tablas:
 - `md_tipus_via` - Tipos de Vía
 - `md_street_name` - Nombres de calles registradas (relacionadas con municipios)
 - `md_direccio` - Direcciones (el campo `nom_via` se mantiene como String para compatibilidad con calles no registradas)
+
+### Scripts SQL
+
+#### Consultas para Municipios
+
+```sql
+-- Obtener todos los municipios ordenados por nombre
+SELECT id_municipi, codi, nom, comarca, id_provincia
+FROM md_municipi
+ORDER BY nom;
+
+-- Obtener todos los municipios con paginación (ejemplo: página 1, 20 registros)
+SELECT id_municipi, codi, nom, comarca, id_provincia
+FROM md_municipi
+ORDER BY nom
+LIMIT 20 OFFSET 0;
+
+-- Obtener todos los municipios por comunidad autónoma
+SELECT m.id_municipi, m.codi, m.nom, m.comarca, m.id_provincia
+FROM md_municipi m
+INNER JOIN md_provincia p ON m.id_provincia = p.id_provincia
+INNER JOIN md_comunitat_autonoma ca ON p.id_comunitat_autonoma = ca.id_comunitat_autonoma
+WHERE ca.id_comunitat_autonoma = 1  -- Cambiar por el ID de la comunidad autónoma deseada
+ORDER BY m.nom;
+
+-- Contar el total de municipios (útil para paginación)
+SELECT COUNT(*) as total FROM md_municipi;
+
+-- Contar municipios por comunidad autónoma
+SELECT COUNT(*) as total
+FROM md_municipi m
+INNER JOIN md_provincia p ON m.id_provincia = p.id_provincia
+WHERE p.id_comunitat_autonoma = 1;  -- Cambiar por el ID de la comunidad autónoma deseada
+```
 
 ## Desarrollo
 

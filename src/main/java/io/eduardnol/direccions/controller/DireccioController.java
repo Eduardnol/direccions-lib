@@ -4,12 +4,17 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.service.DireccioService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/direccions")
 @AllArgsConstructor
+@Validated
 public class DireccioController implements DireccioApi {
 
     private final DireccioService direccioService;
@@ -69,7 +75,7 @@ public class DireccioController implements DireccioApi {
 
     @Override
     @GetMapping("/search/streets")
-    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @jakarta.validation.constraints.NotBlank String searchText) {
+    public List<StreetSearchResultDTO> searchStreets(@RequestParam("q") @NotBlank String searchText) {
         return direccioService.searchStreets(searchText);
     }
 
@@ -81,5 +87,25 @@ public class DireccioController implements DireccioApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(streetDetailDTO);
+    }
+
+    @Override
+    @GetMapping("/municipi/paginated")
+    public PageResponseDTO<ComboDTO> getAllMunicipiPaginated(
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
+        return direccioService.getAllMunicipiPaginated(page, size);
+    }
+
+    @Override
+    @GetMapping("/municipi")
+    public List<ComboDTO> getAllMunicipi() {
+        return direccioService.getAllMunicipi();
+    }
+
+    @Override
+    @GetMapping("/municipi/comunitat-autonoma/{idComunitatAutonoma}")
+    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable @Min(1) Long idComunitatAutonoma) {
+        return direccioService.getMunicipiByComunitatAutonoma(idComunitatAutonoma);
     }
 }
