@@ -23,7 +23,8 @@ public interface DireccioApi {
     ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idStreetName);
     
     // New methods for municipalities
-    PageResponseDTO<ComboDTO> getAllMunicipiPaginated(int page, int size);
+    PageResponseDTO<ComboDTO> getAllMunicipiPaginated(@jakarta.validation.constraints.Min(0) int page, 
+                                                        @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size);
     List<ComboDTO> getAllMunicipi();
-    List<ComboDTO> getMunicipiByComunitatAutonoma(Long idComunitatAutonoma);
+    List<ComboDTO> getMunicipiByComunitatAutonoma(@jakarta.validation.constraints.Min(1) Long idComunitatAutonoma);
 }

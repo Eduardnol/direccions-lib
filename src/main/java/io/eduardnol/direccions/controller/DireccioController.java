@@ -87,8 +87,8 @@ public class DireccioController implements DireccioApi {
     @Override
     @GetMapping("/municipi/paginated")
     public PageResponseDTO<ComboDTO> getAllMunicipiPaginated(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "0") @jakarta.validation.constraints.Min(0) int page,
+            @RequestParam(defaultValue = "20") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size) {
         return direccioService.getAllMunicipiPaginated(page, size);
     }
 
@@ -100,7 +100,7 @@ public class DireccioController implements DireccioApi {
 
     @Override
     @GetMapping("/municipi/comunitat-autonoma/{idComunitatAutonoma}")
-    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable Long idComunitatAutonoma) {
+    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable @jakarta.validation.constraints.Min(1) Long idComunitatAutonoma) {
         return direccioService.getMunicipiByComunitatAutonoma(idComunitatAutonoma);
     }
 }
