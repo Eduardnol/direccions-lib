@@ -4,6 +4,7 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +21,9 @@ public interface DireccioApi {
     ResponseEntity<ComarcaDTO> getComarcaByIdMunicipi(Long idMunicipi);
     List<StreetSearchResultDTO> searchStreets(@jakarta.validation.constraints.NotBlank String searchText);
     ResponseEntity<StreetDetailDTO> getStreetDetailsById(Long idStreetName);
+    
+    // New methods for municipalities
+    PageResponseDTO<ComboDTO> getAllMunicipiPaginated(int page, int size);
+    List<ComboDTO> getAllMunicipi();
+    List<ComboDTO> getMunicipiByComunitatAutonoma(Long idComunitatAutonoma);
 }

@@ -4,6 +4,7 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.service.DireccioService;
@@ -81,5 +82,25 @@ public class DireccioController implements DireccioApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(streetDetailDTO);
+    }
+
+    @Override
+    @GetMapping("/municipi/paginated")
+    public PageResponseDTO<ComboDTO> getAllMunicipiPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return direccioService.getAllMunicipiPaginated(page, size);
+    }
+
+    @Override
+    @GetMapping("/municipi")
+    public List<ComboDTO> getAllMunicipi() {
+        return direccioService.getAllMunicipi();
+    }
+
+    @Override
+    @GetMapping("/municipi/comunitat-autonoma/{idComunitatAutonoma}")
+    public List<ComboDTO> getMunicipiByComunitatAutonoma(@PathVariable Long idComunitatAutonoma) {
+        return direccioService.getMunicipiByComunitatAutonoma(idComunitatAutonoma);
     }
 }

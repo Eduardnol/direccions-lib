@@ -4,6 +4,7 @@ import io.eduardnol.direccions.dto.CheckCodiPostalDTO;
 import io.eduardnol.direccions.dto.ComarcaDTO;
 import io.eduardnol.direccions.dto.ComboCodeDTO;
 import io.eduardnol.direccions.dto.ComboDTO;
+import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.dto.StreetDetailDTO;
 import io.eduardnol.direccions.dto.StreetSearchResultDTO;
 import io.eduardnol.direccions.entity.CodiPostalEntity;
@@ -15,6 +16,9 @@ import io.eduardnol.direccions.repository.*;
 import io.eduardnol.direccions.service.DireccioService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,5 +113,40 @@ public class DireccioServiceImpl implements DireccioService {
             return null;
         }
         return streetNameMapper.toStreetDetailDTO(streetName.get());
+    }
+
+    @Override
+    public PageResponseDTO<ComboDTO> getAllMunicipiPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<MunicipiEntity> municipiPage = municipiRepository.findAllByOrderByNom(pageable);
+        
+        List<ComboDTO> content = municipiPage.getContent().stream()
+                .map(municipiMapper::toComboDTO)
+                .toList();
+        
+        return PageResponseDTO.<ComboDTO>builder()
+                .content(content)
+                .page(municipiPage.getNumber())
+                .size(municipiPage.getSize())
+                .totalElements(municipiPage.getTotalElements())
+                .totalPages(municipiPage.getTotalPages())
+                .first(municipiPage.isFirst())
+                .last(municipiPage.isLast())
+                .build();
+    }
+
+    @Override
+    public List<ComboDTO> getAllMunicipi() {
+        return municipiRepository.findAllByOrderByNom().stream()
+                .map(municipiMapper::toComboDTO)
+                .toList();
+    }
+
+    @Override
+    public List<ComboDTO> getMunicipiByComunitatAutonoma(Long idComunitatAutonoma) {
+        return municipiRepository.findAllByProvinciaComunitatAutonomaIdComunitatAutonomaOrderByNom(idComunitatAutonoma)
+                .stream()
+                .map(municipiMapper::toComboDTO)
+                .toList();
     }
 }
