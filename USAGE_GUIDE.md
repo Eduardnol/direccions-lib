@@ -132,6 +132,15 @@ GET /api/v1/direccions/provincia/1
 # Obtener municipios por provincia
 GET /api/v1/direccions/municipi/1
 
+# Obtener todos los municipios sin paginación
+GET /api/v1/direccions/municipi
+
+# Obtener todos los municipios con paginación
+GET /api/v1/direccions/municipi/paginated?page=0&size=20
+
+# Obtener municipios por comunidad autónoma
+GET /api/v1/direccions/municipi/comunitat-autonoma/1
+
 # Obtener tipos de vía
 GET /api/v1/direccions/tipus-via
 
@@ -180,6 +189,15 @@ public class MiControlador {
         
         // Obtener detalles completos de una calle
         StreetDetailDTO streetDetail = direccioService.getStreetDetailsById(1L);
+        
+        // Obtener todos los municipios sin paginación
+        List<ComboDTO> municipios = direccioService.getAllMunicipi();
+        
+        // Obtener todos los municipios con paginación
+        PageResponseDTO<ComboDTO> municipiosPaginados = direccioService.getAllMunicipiPaginated(0, 20);
+        
+        // Obtener municipios por comunidad autónoma
+        List<ComboDTO> municipiosCA = direccioService.getMunicipiByComunitatAutonoma(1L);
         
         return ResponseEntity.ok(paisos);
     }
