@@ -5,6 +5,7 @@ import io.eduardnol.direccions.dto.PageResponseDTO;
 import io.eduardnol.direccions.entity.MunicipiEntity;
 import io.eduardnol.direccions.entity.ProvinciaEntity;
 import io.eduardnol.direccions.entity.ComunitatAutonomaEntity;
+import io.eduardnol.direccions.mapper.ComarcaMapper;
 import io.eduardnol.direccions.mapper.MunicipiMapper;
 import io.eduardnol.direccions.repository.MunicipiRepository;
 import io.eduardnol.direccions.service.impl.DireccioServiceImpl;
@@ -31,6 +32,9 @@ class DireccioServiceMunicipiTest {
 
     @Mock
     private MunicipiRepository municipiRepository;
+
+    @Mock
+    private ComarcaMapper comarcaMapper;
 
     @Mock
     private MunicipiMapper municipiMapper;
