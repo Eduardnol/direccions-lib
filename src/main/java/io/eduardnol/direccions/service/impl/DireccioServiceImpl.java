@@ -45,6 +45,7 @@ public class DireccioServiceImpl implements DireccioService {
     private final MunicipiMapper municipiMapper;
     private final TipusViaMapper tipusViaMapper;
     private final StreetNameMapper streetNameMapper;
+    private final ComarcaMapper comarcaMapper;
 
     @Override
     public List<ComboCodeDTO> getAllPais() {
@@ -85,13 +86,11 @@ public class DireccioServiceImpl implements DireccioService {
     @Override
     public ComarcaDTO getComarcaByIdMunicipi(Long idMunicipi) {
         MunicipiEntity municipi = municipiRepository.findById(idMunicipi).orElse(null);
-        if (municipi == null) {
-            log.warn("Municipi with id {} not found", idMunicipi);
+        if (municipi == null || municipi.getComarca() == null) {
+            log.warn("Municipi with id {} not found or has no comarca", idMunicipi);
             return null;
         }
-        return ComarcaDTO.builder()
-                .name(municipi.getComarca())
-                .build();
+        return comarcaMapper.toComarcaDTO(municipi.getComarca());
     }
 
     @Override
