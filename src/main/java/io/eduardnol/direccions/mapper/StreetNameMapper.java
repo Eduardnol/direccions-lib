@@ -44,8 +44,8 @@ public interface StreetNameMapper {
             return null;
         }
         return ComboDTO.builder()
-                .key(null)  // comarca is just a String field, no ID available
-                .value(streetNameEntity.getMunicipi().getComarca())
+                .key(streetNameEntity.getMunicipi().getComarca().getIdComarca())
+                .value(streetNameEntity.getMunicipi().getComarca().getNom())
                 .build();
     }
     

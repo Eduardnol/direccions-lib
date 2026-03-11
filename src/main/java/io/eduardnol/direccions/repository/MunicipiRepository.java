@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface MunicipiRepository extends JpaRepository<MunicipiEntity, Long> {
     List<MunicipiEntity> findAllByProvinciaIdProvinciaOrderByNom(Long idProvincia);
+    List<MunicipiEntity> findAllByComarcaIdComarcaOrderByNom(Long idComarca);
     Optional<MunicipiEntity> findByCodi(String codi);
     Optional<MunicipiEntity> findByNomIgnoreCase(String nom);
     Optional<MunicipiEntity> findFirstByNom(String nom);

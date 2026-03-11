@@ -6,5 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ComarcaDTO {
-    private String name;
+    private Long id;
+    private String codi;
+    private String nom;
 }

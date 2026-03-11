@@ -119,7 +119,7 @@ class DireccioServiceSearchTest {
         MunicipiEntity municipi = MunicipiEntity.builder()
                 .idMunicipi(1L)
                 .nom("Barcelona")
-                .comarca("Barcelonès")
+                .comarca(ComarcaEntity.builder().idComarca(1L).codi("BAR").nom("Barcelonès").build())
                 .provincia(provincia)
                 .build();
 

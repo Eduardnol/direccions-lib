@@ -25,8 +25,9 @@ public class MunicipiEntity implements Serializable {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "comarca", length = 50)
-    private String comarca;
+    @ManyToOne
+    @JoinColumn(name = "id_comarca")
+    private ComarcaEntity comarca;
 
     @ManyToOne
     @JoinColumn(name = "id_provincia")
